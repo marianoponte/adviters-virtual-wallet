@@ -1,0 +1,19 @@
+version: '3.1'
+services:
+  app:
+    container_name: app-virtual-wallet
+    image: app-virtual-wallet
+    build: ./
+    ports:
+      - "8090:8090"
+    depends_on:
+      - dbpostgresql
+
+  dbpostgresql:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=virtualwalletdb

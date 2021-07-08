@@ -14,12 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "wallets")
-public class Wallet {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
+public class Wallet extends BaseEntity {
 
     @Column(name = "creation_date")
     private LocalDateTime creationDate;

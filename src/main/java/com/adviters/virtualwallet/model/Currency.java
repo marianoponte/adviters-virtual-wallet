@@ -13,12 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "currencies")
-public class Currency {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
+public class Currency extends BaseEntity {
 
     @Column(name = "currency_name")
     private String currencyName;

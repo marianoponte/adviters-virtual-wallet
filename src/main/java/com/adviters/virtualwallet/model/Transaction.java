@@ -15,12 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "transactions")
-public class Transaction {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
+public class Transaction extends BaseEntity{
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_currencywallet")
