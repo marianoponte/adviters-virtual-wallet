@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 // Clase que representa la tabla de cotizaciones
@@ -17,7 +16,7 @@ import java.time.LocalDateTime;
 @Table(name = "quotes")
 public class Quotation extends BaseEntity {
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_currency")
     private Currency currency;
 
@@ -25,5 +24,5 @@ public class Quotation extends BaseEntity {
     private LocalDateTime quotationDate;
 
     @Column(name = "price")
-    private BigDecimal price;
+    private Double price;
 }

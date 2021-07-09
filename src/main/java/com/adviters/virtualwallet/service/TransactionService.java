@@ -61,10 +61,10 @@ public class TransactionService {
     }
 
     public void updateCurrencyWallet(CurrencyWallet currencyWallet, Transaction transaction) {
-        if (transaction.getTransactionType().toUpperCase() == Constants.TRANSACTION_TYPE_ACU) {
+        if (Constants.TRANSACTION_TYPE_ACU.equals(transaction.getTransactionType().toUpperCase())) {
             currencyWallet.getAmount().add(transaction.getAmount());
             currencyWalletService.updateCurrencyWallet(currencyWallet);
-        } else if (transaction.getTransactionType().toUpperCase() == Constants.TRANSACTION_TYPE_EXT) {
+        } else if (Constants.TRANSACTION_TYPE_EXT.equals(transaction.getTransactionType().toUpperCase()) {
             currencyWalletService.updateCurrencyWallet(currencyWallet);
         } else throw new BusinessException("Los valores correctos para el tipo de transaccion son: ACU y EXT");
     }

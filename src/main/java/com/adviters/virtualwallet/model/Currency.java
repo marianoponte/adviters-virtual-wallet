@@ -15,6 +15,6 @@ import javax.persistence.*;
 @Table(name = "currencies")
 public class Currency extends BaseEntity {
 
-    @Column(name = "currency_name")
+    @Column(name = "currency_name", unique=true)
     private String currencyName;
 }

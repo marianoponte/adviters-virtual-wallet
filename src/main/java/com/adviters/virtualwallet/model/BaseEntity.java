@@ -4,7 +4,7 @@ import lombok.Getter;
 
 import javax.persistence.*;
 
-//Clase base para generacion de id de los modelos
+//Clase base para generacion de id de los modelos y que hereden de esta
 
 @Entity
 @Getter
