@@ -12,6 +12,10 @@ _Se cargan en la base de datos automáticamente los dos tipos de monedas a utili
 
 _Al iniciar la aplicación se ejecuta el llamado a la API de cotización cada 10 segundos, y se van persistiendo los datos en la entidad de Quotation._
 
+## Diagrama de clases  
+
+![alt text](https://github.com/marianoponte/adviters-virtual-wallet/blob/main/diagrama_solucion.png)
+
 ### Pre-requisitos 📋
 
 Tecnologías utilizadas para correr la aplicación:
