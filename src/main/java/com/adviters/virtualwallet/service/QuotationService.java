@@ -16,10 +16,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,19 +51,27 @@ public class QuotationService {
 
     //Obetener cotizacion por una fecha determinada
     public Quotation getQuotationByDate(LocalDateTime date) {
+        //Quito los milisegundos de la fecha
         date = date.truncatedTo(ChronoUnit.SECONDS);
         Optional<Quotation> quotation = quotationRepository.findByQuotationDateParam(date);
         if (quotation.isPresent()) {
             return quotation.get();
-        } else
-            return null;
+        } else {
+            quotation = quotationRepository.findLastRecordByQuotationDateParam(date);
+            if (quotation.isPresent()) {
+                return quotation.get();
+            } else return null;
+        }
     }
+
     //Obtener todas las cotizaciones filtradas por fecha: desde y hasta
     public Quotation getQuotationsByFromAndToDates(LocalDateTime from, LocalDateTime to) {
         List<Quotation> quotations = (List<Quotation>) quotationRepository.findAllByFromAndToDates(from,to);
 
         if (quotations != null && !quotations.isEmpty()) {
             Quotation quotationWithMaxPrice = quotations.stream()
+                    //Uso reduce y utilizo la clase Compare y el metodo max para ir comparando y obtener
+                    //el de mayor valor
                     .reduce(Compare::max)
                     .get();
 
@@ -83,15 +90,8 @@ public class QuotationService {
         System.out.println("***********************************");
 
         Currency currency = currencyRepository.findByCurrencyName(quoteBtcResponse.getCurr1());
-        System.out.println("***********************************");
-        System.out.println("BTC CURRENCY:" + quoteBtcResponse.getCurr1());
-        System.out.println("***********************************");
 
-        System.out.println("***********************************");
-        System.out.println("CURRENCY:" + currency.getCurrencyName());
-        System.out.println("***********************************");
-
-        Quotation quotation = new Quotation(currency, LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), Double.parseDouble(quoteBtcResponse.getLprice()));
+        Quotation quotation = new Quotation(currency, LocalDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")).truncatedTo(ChronoUnit.SECONDS), Double.parseDouble(quoteBtcResponse.getLprice()));
         quotationRepository.save(quotation);
         System.out.println("***********************************");
         System.out.println("QUOTATION:" + quotation);
@@ -114,7 +114,7 @@ public class QuotationService {
 
          //Casteo la respuesta obtenida en la clase String a una clase QuoteBtcResponse
          //para poder manipular los datos de mejor manera
-         //para el mapeo utilizo Jackson o bien podria usar la libreria Gson
+         //para el mapeo utilizo Jackson o bien podria usar la libreria Gson por ejemplo
         QuoteBtcResponse quoteBtcResponse = new ObjectMapper().readValue(response, QuoteBtcResponse.class);
         return quoteBtcResponse;
     }

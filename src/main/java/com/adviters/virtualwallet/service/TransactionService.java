@@ -8,6 +8,7 @@ import com.adviters.virtualwallet.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -61,11 +62,17 @@ public class TransactionService {
     }
 
     public void updateCurrencyWallet(CurrencyWallet currencyWallet, Transaction transaction) {
+        BigDecimal amountToUpdate;
         if (Constants.TRANSACTION_TYPE_ACU.equals(transaction.getTransactionType().toUpperCase())) {
-            currencyWallet.getAmount().add(transaction.getAmount());
+            amountToUpdate = currencyWallet.getAmount().add(transaction.getAmount());
+            currencyWallet.setAmount(amountToUpdate);
             currencyWalletService.updateCurrencyWallet(currencyWallet);
-        } else if (Constants.TRANSACTION_TYPE_EXT.equals(transaction.getTransactionType().toUpperCase()) {
+        } else if (Constants.TRANSACTION_TYPE_EXT.equals(transaction.getTransactionType().toUpperCase())) {
+            if (currencyWallet.getAmount().doubleValue() >= transaction.getAmount().doubleValue()) {
+                amountToUpdate = currencyWallet.getAmount().subtract(transaction.getAmount());
+                currencyWallet.setAmount(amountToUpdate);
+            } else throw new BusinessException("The amount you want to withdraw is greater than what you have available: " + currencyWallet.getAmount());
             currencyWalletService.updateCurrencyWallet(currencyWallet);
-        } else throw new BusinessException("Los valores correctos para el tipo de transaccion son: ACU y EXT");
+        } else throw new BusinessException("The correct values for the transaction type are: ACU and EXT");
     }
 }

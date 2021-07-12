@@ -14,6 +14,7 @@ public class VirtualwalletApplication {
 		SpringApplication.run(VirtualwalletApplication.class, args);
 	}
 
+	//Se cargan en la base de datos los 2 tipos de monedas utilizados en la aplicacion
 	@Bean
 	CommandLineRunner start(CurrencyRepository currencyRepository){
 		return args -> {

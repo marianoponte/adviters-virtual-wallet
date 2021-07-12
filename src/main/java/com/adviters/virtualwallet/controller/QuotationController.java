@@ -34,7 +34,7 @@ public class QuotationController {
     }
 
     @GetMapping("/quotations/max")
-    public ResponseEntity<Quotation> getQuotationsMax(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from, @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime to) {
+    public ResponseEntity<Quotation> getQuotationsMax(@RequestParam(required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from, @RequestParam(required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime to) {
         Quotation quotation;
         if (from != null && to != null) {
             quotation = quotationService.getQuotationsByFromAndToDates(from, to);

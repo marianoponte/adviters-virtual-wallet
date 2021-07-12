@@ -22,4 +22,7 @@ public interface QuotationRepository extends CrudRepository<Quotation, Long> {
     @Query(value = "from Quotation t where t.quotationDate BETWEEN :date AND :date")
     Optional<Quotation> findByQuotationDateParam(@Param("date") LocalDateTime date);
 
+    //Filtro los registros donde la fecha sea menor a la del parametro y asi traer la mas reciente
+    @Query(value = "from Quotation t where t.quotationDate = (SELECT MAX(t.quotationDate) from Quotation t where t.quotationDate <= :date)")
+    Optional<Quotation> findLastRecordByQuotationDateParam(@Param("date") LocalDateTime date);
 }
